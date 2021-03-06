@@ -9,23 +9,28 @@ import { Product } from 'app/model/product';
 @Injectable({
   providedIn: 'root'
 })
+
 export class ProductService {
 
-  serverUrl: string = `http://localhost:3000/product`;
+  constructor(private http: HttpClient, private toastr: ToastrService, private router: Router,) { }
+
+    // Basic variables for HTTP requests. //
 
   list$: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
 
-  constructor(private http: HttpClient, private toastr: ToastrService, private router: Router,) { }
+  serverUrl: string = `http://localhost:3000/product`;
+
+  // CRUD methods for product-related HTTP requests.//
+
+  get(id: number): Observable<Product> {
+    return Number(id) === 0 ? of(new Product()) : this.http.get<Product>(`${this.serverUrl}/${Number(id)}`);
+  }
 
   getAll(): void {
     this.list$.next([]);
     this.http.get<Product[]>(this.serverUrl).subscribe(
       products => this.list$.next(products)
     );
-  }
-
-  get(id: number): Observable<Product> {
-    return Number(id) === 0 ? of(new Product()) : this.http.get<Product>(`${this.serverUrl}/${Number(id)}`);
   }
 
   update(product: Product): Observable<Product> {
@@ -58,15 +63,17 @@ export class ProductService {
     this.toastr.error(`Product #${product.id}</br>${product.name}</br>has been deleted.`, 'DELETED');
   }
 
-  redirectTo(uri:string){
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
-    this.router.navigate([uri]));
- }
+  redirectTo(uri: string) {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate([uri]));
+  }
 
 }
 
+// Base class for storing the sort order (ascending or descending) of columns. //
+
 export class ColumnSortOrder {
-  id = "none";
+  id = "ascending";
   name = "none";
   type = "none";
   catID: string = "none";

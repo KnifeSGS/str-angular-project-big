@@ -1,13 +1,19 @@
+h4 {
+  text-align: center;
+}
+
 .error-message {
-    margin-top: 5px;
-    font-style: italic;
-    color: rgb(155, 4, 4);
-    animation-name: bounce;
-    animation-duration: .5s;
+ 
+  margin-top: 5px;
     animation-delay: 0.25s;
-  }
+    animation-duration: .5s;
+    animation-name: bounce;
+    color: rgb(155, 4, 4);
+    font-style: italic;
+ 
+}
   
-  @keyframes bounce {
+@keyframes bounce {
     0% {
       transform: translateX(0px);
       timing-function: ease-in;
@@ -40,8 +46,4 @@
       transform: translateX(0px);
       timing-function: ease-in;
     }
-  }
-  
-  h4 {
-    text-align: center;
-  }
+}

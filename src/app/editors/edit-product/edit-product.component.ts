@@ -15,29 +15,42 @@ import { switchMap } from 'rxjs/operators';
 })
 export class EditProductComponent implements OnInit {
 
-  clicked: boolean = false;
-
-  product$: Observable<Product> = this.activatedRoute.params.pipe(
-    switchMap(params => this.productService.get(params.id))
-  );
-
-  categoryList$: BehaviorSubject<Category[]> = this.categoryService.list$;
-
-  attributes = new ProductAttributes();
-
-  constructor(    
+  constructor(
     private activatedRoute: ActivatedRoute,
     private productService: ProductService,
     private categoryService: CategoryService,
     private router: Router,) { }
 
+  // This is needed to get Category data for the form. //
+
   ngOnInit(): void {
     this.categoryService.getAll();
   }
 
+  categoryList$: BehaviorSubject<Category[]> = this.categoryService.list$;
+
+  // Needed to prevent the user from repeatedly clicking the Save button. //
+
+  clicked: boolean = false;
+
+  // For displaying understandable attributes names. //
+
+  attributes = new ProductAttributes();
+
+  // Editing: getting the product ID which should be edited //
+
+  product$: Observable<Product> = this.activatedRoute.params.pipe(
+    switchMap(params => this.productService.get(params.id))
+  );
+
+  // Runs when updated/created product is submitted. //
+
   onUpdate(form: NgForm, product: Product): void {
-    this.clicked=true;
+    // Prevents repeated clicking.//
+    this.clicked = true;
+    // Animates button. //
     this.animateSaveIcon();
+    // Calls create or update method, depending on user choice.//
     if (product.id === 0) {
       this.productService.create(product);
     } else {
@@ -46,6 +59,9 @@ export class EditProductComponent implements OnInit {
       );
     }
   }
+
+  // Takes care of button animation at save. //
+
   animateSaveIcon(): void {
     let saveIcon = document.getElementById("saveicon");
     saveIcon.classList.remove("fa-save");

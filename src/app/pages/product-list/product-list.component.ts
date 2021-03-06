@@ -1,5 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Category, CategoryAttributes } from 'app/model/category';
 import { Product, ProductAttributes, ProductSummaryData } from 'app/model/product';
 import { CategoryService } from 'app/services/category.service';
@@ -14,7 +15,69 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class ProductListComponent implements OnInit {
 
+  constructor(private productService: ProductService, private categoryService: CategoryService) {
+  }
+
+  ngOnInit(): void {
+    this.productService.getAll();
+    this.updatingValues();
+  }
+
+  // For getting JSON data. //
+
+  productList$: BehaviorSubject<Product[]> = this.productService.list$;
+
+  // Stores whether to display data or loading animation.//
+  updating: boolean = true
+
+  // Gets summary line data.
+
+  updatingValues() {
+    this.productList$.subscribe(item => {
+      if (item.length > 0) {
+        this.updating = false;
+        this.getData(item);
+      }
+    })
+  }
+
+  productList: Product[] = [];
+  productSummaryData = new ProductSummaryData();
+
+  getData(products: Product[]): void {
+    this.productList = products;
+    for (let i = 0; i < this.productList.length; i++) {
+      this.productSummaryData.totalProducts++
+      this.productSummaryData.totalItems = this.productSummaryData.totalItems + this.productList[i].stock
+      this.productSummaryData.totalValue = this.productSummaryData.totalValue + (this.productList[i].price * this.productList[i].stock)
+      let category = Number(this.productList[i].catID) - 1
+      this.productSummaryData.totalinCategories[category]++;
+      if (this.productList[i].active) {
+        this.productSummaryData.totalActive++
+      }
+      if (this.productList[i].featured) {
+        this.productSummaryData.totalFeatured++
+      }
+    }
+
+  }
+
+  // Needed for the category info popover to function properly. //
+
+  category = new Category();
+  category$ = new Observable<Category>();
+  categoryAttributes = new CategoryAttributes();
+
+  getCategory(id: number) {
+    this.category$ = this.categoryService.get(id)
+    this.category$.forEach(item => this.category = item);
+  }
+
+  // Needed for storing the current product. //
+
   product = new Product();
+
+  // Stores which product to delete, pops confirmation modal and runs button animnation. //
 
   setProducttoDelete(product: Product): void {
     this.animateDeleteIcon(product);
@@ -31,6 +94,8 @@ export class ProductListComponent implements OnInit {
     })
   }
 
+  // Takes care of delete button animation. //
+
   animateDeleteIcon(product: Product): void {
     let buttonID = '' + product.id;
     let deleteIcon = document.getElementById(buttonID);
@@ -38,50 +103,21 @@ export class ProductListComponent implements OnInit {
     deleteIcon.classList.add("fa-spinner", "fa-pulse");
   }
 
-  category = new Category();
-  category$ = new Observable<Category>();
-  categoryAttributes = new CategoryAttributes();
-
-  getCategory(id: number) {
-    this.category$ = this.categoryService.get(id)
-    this.category$.forEach(item => this.category = item);
-  }
-
-  productList$: BehaviorSubject<Product[]> = this.productService.list$;
-
-  updating: boolean = true
-
-  phrase: string = '';
-  filterKey = 'name';
-
-  sorterKey: string = '';
-
-  attributes = new ProductAttributes();
-
-  constructor(private productService: ProductService, private categoryService: CategoryService) {
-
-  }
-
-  ngOnInit(): void {
-    this.productService.getAll();
-    this.updatingValues();
-  }
-
-
-  updatingValues() {
-
-    this.productList$.subscribe(item => {
-      if (item.length > 0) {
-        this.updating = false;
-        this.getData(item);
-      }
-    })
-
-  }
-
+  // Calls delete when the delete button is pushed. //
   onDelete(product: Product): void {
     this.productService.remove(product);
   }
+
+  // For displaying understandable columns. //
+
+  attributes = new ProductAttributes();
+
+  // Filter- sorter functionality //
+
+
+  phrase: string = '';
+  filterKey = 'name';
+  sorterKey: string = '';
 
   onChangePhrase(event: Event): void {
     this.phrase = (event.target as HTMLInputElement).value;
@@ -103,6 +139,8 @@ export class ProductListComponent implements OnInit {
   originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
     return 0;
   }
+
+  // Displaying the small arrow when sorting //
 
   onColumnSelect(key: string): void {
     this.sorterKey = key;
@@ -139,31 +177,10 @@ export class ProductListComponent implements OnInit {
 
   sortOrder = new ColumnSortOrder();
 
+  // Scrolls page to last line //
+
   scroll(id: string) {
     const elmnt = document.getElementById(id);
     elmnt.scrollIntoView(false);
   }
-
-  productList: Product[] = [];
-  productSummaryData = new ProductSummaryData();
-
-  getData(products: Product[]): void {
-    this.productList = products;
-    for (let i = 0; i < this.productList.length; i++) {
-      this.productSummaryData.totalProducts++
-      this.productSummaryData.totalItems = this.productSummaryData.totalItems + this.productList[i].stock
-      this.productSummaryData.totalValue = this.productSummaryData.totalValue + (this.productList[i].price * this.productList[i].stock)
-      let category = Number(this.productList[i].catID) - 1
-      this.productSummaryData.totalinCategories[category]++;
-      if (this.productList[i].active) {
-        this.productSummaryData.totalActive++
-      }
-      if (this.productList[i].featured) {
-        this.productSummaryData.totalFeatured++
-      }
-    }
-
-  }
-
-
 }

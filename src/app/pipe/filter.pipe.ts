@@ -14,7 +14,7 @@ export class FilterPipe implements PipeTransform {
     }
 
     let arr = [];
-    if (key === 'id' || key === 'price' || key === 'catID' || key === 'sotck') {
+    if (key === 'id' || key === 'price' || key === 'catID' || key === 'stock') {
       arr = value.filter(item => item[key] == phrase);
     } else  {
       phrase = ('' + phrase).toLowerCase();

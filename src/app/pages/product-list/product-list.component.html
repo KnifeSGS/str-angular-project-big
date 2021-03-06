@@ -17,8 +17,8 @@
                         <button class="btn btn-primary" (click)="scroll('summaries')">Scroll To Summaries</button>
                     </div>
                     <div class="card-body col-12 col-md-6 d-flex">
-                        <input id="phrase" name="phrase" (keyup)="onChangePhrase($event)" class="form-control"
-                            type="text" placeholder="Enter phrase..."
+                        <input id="phrase" name="phrase" [formControl]="phraseForm" (keyup)="onChangePhrase($event)"
+                            class="form-control" type="text" placeholder="Enter phrase..."
                             [disabled]="filterKey==='active' || filterKey==='featured'">
                         <select class="custom-select ml-2" (change)="onChangeKey($event)">
                             <ng-container *ngFor="let attribute of attributes | keyvalue:originalOrder">
@@ -43,11 +43,13 @@
                                 <thead class="text-primary">
                                     <th *ngFor="let attribute of attributes | keyvalue:originalOrder"
                                         (click)="onColumnSelect(attribute.key)">
-                                        {{attribute.value}}
-                                        <span *ngIf="(sortOrder[attribute.key] === 'ascending' )"><i
+                                        <span class="direction-arrow"
+                                            *ngIf="(sortOrder[attribute.key] === 'ascending' )"><i
                                                 class="fa fa-angle-up"></i></span>
-                                        <span *ngIf="(sortOrder[attribute.key] === 'descending' )"><i
+                                        <span class="direction-arrow"
+                                            *ngIf="(sortOrder[attribute.key] === 'descending' )"><i
                                                 class="fa fa-angle-down"></i></span>
+                                        {{attribute.value}}
                                     </th>
                                 </thead>
                                 <tbody>
@@ -56,14 +58,16 @@
                                         <ng-container *ngFor="let attribute of attributes | keyvalue:originalOrder">
                                             <td
                                                 *ngIf="attribute.key!=='featured' && attribute.key!=='active' && attribute.key!=='catID' && attribute.key!=='price' ">
-                                                {{product[attribute.key]}}</td>
+                                                {{product[attribute.key]}}
+                                            </td>
                                             <td *ngIf="attribute.key==='catID'"
                                                 (click)="getCategory(product[attribute.key])" class="clickable"
                                                 [ngbPopover]="popContent" container="body" animation="true"
                                                 placement="bottom" triggers="manual" #p="ngbPopover" (click)="p.open()"
                                                 [popoverTitle]="popTitle">
                                                 {{product[attribute.key]}}</td>
-                                            <td *ngIf="attribute.key==='price'">{{ product[attribute.key].toLocaleString('hu-HU', {
+                                            <td *ngIf="attribute.key==='price'">{{
+                                                product[attribute.key].toLocaleString('hu-HU', {
                                                 style: 'currency',
                                                 currency: 'HUF',
                                                 maximumFractionDigits: 0
@@ -136,7 +140,7 @@
                                             style: 'currency',
                                             currency: 'HUF',
                                             maximumFractionDigits: 0
-                                          }) }}</td>
+                                            }) }}</td>
                                         <td>{{productSummaryData.totalActive}}</td>
                                         <td>{{productSummaryData.totalFeatured}}</td>
                                         <td>{{productSummaryData.totalinCategories}}</td>
