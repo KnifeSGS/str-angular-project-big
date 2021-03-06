@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 
 import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
-import { UserProfileComponent } from '../../user-profile/user-profile.component';
 import { ProductListComponent } from 'app/pages/product-list/product-list.component';
 import { OrderListComponent } from 'app/pages/order-list/order-list.component';
 import { BillListComponent } from 'app/pages/bill-list/bill-list.component';
@@ -56,7 +55,6 @@ export const AdminLayoutRoutes: Routes = [
     //     }]
     // }
     { path: 'dashboard', component: DashboardComponent },
-    { path: 'user-profile', component: UserProfileComponent },
     { path: 'product-list', component: ProductListComponent },
     { path: 'order-list', component: OrderListComponent },
     { path: 'order/:id', component: EditOrderComponent },
