@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 // import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
-import { UserProfileComponent } from '../../user-profile/user-profile.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
@@ -28,7 +27,6 @@ import { EditCustomerComponent } from 'app/editors/edit-customer/edit-customer.c
   ],
   declarations: [
     // DashboardComponent,
-    UserProfileComponent,
     EditCustomerComponent,
   ]
 })

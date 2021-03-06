@@ -201,7 +201,7 @@ export class DashboardComponent implements OnInit {
       setTimeout(() => {
         this.counts[2].bills = '' + item.length;
         this.charts[1].content = Math.floor((parseInt(this.cards[3].content) / parseInt(this.counts[2].bills)) * 100) + '% of Bills is paid';
-      }, 1000);
+      }, 800);
     })
   }
 
