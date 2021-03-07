@@ -6,16 +6,17 @@ declare interface RouteInfo {
   title: string;
   icon: string;
   class: string;
+  hidden: boolean;
 }
 export const ROUTES: RouteInfo[] = [
-  { path: '/dashboard', title: 'Dashboard', icon: 'dashboard', class: '' },
-  { path: '/user-profile', title: 'User Profile', icon: 'person', class: '' },
-  { path: '/table-list', title: 'Table List', icon: 'content_paste', class: '' },
-  { path: '/typography', title: 'Typography', icon: 'library_books', class: '' },
-  { path: '/icons', title: 'Icons', icon: 'bubble_chart', class: '' },
-  // { path: '/maps', title: 'Maps',  icon:'location_on', class: '' },
-  { path: '/notifications', title: 'Notifications', icon: 'notifications', class: '' },
-  { path: '/upgrade', title: 'Upgrade to PRO', icon: 'unarchive', class: 'active-pro' },
+  { path: '/dashboard', title: 'Dashboard', icon: 'dashboard', class: '', hidden: false },
+  { path: '/product-list', title: 'Products', icon: 'shopping_cart', class: '', hidden: false },
+  { path: '/customer-list', title: 'Customers', icon: 'account_circle', class: '', hidden: false },
+  { path: '/order-list', title: 'Orders', icon: 'content_paste', class: '', hidden: false },
+  { path: '/bill-list', title: 'Bills', icon: 'euro_symbol', class: '', hidden: false },
+  { path: '/category-list', title: 'Categories', icon: 'disc_full', class: '', hidden: false },
+  { path: '/customer/', title: 'Customer', icon: '', class: '', hidden: true },
+  { path: '/about', title: 'We are Team 4, also known as ALT + F4', icon: '', class: '', hidden: true },
 ];
 
 @Component({
@@ -29,7 +30,7 @@ export class SidebarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter(menuItem => menuItem);
+    this.menuItems = ROUTES.filter(menuItem => !menuItem.hidden);
   }
   isMobileMenu() {
     if ($(window).width() > 991) {

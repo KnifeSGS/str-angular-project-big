@@ -1,0 +1,49 @@
+h4 {
+  text-align: center;
+}
+
+.error-message {
+ 
+  margin-top: 5px;
+    animation-delay: 0.25s;
+    animation-duration: .5s;
+    animation-name: bounce;
+    color: rgb(155, 4, 4);
+    font-style: italic;
+ 
+}
+  
+@keyframes bounce {
+    0% {
+      transform: translateX(0px);
+      timing-function: ease-in;
+    }
+    37% {
+      transform: translateX(5px);
+      timing-function: ease-out;
+    }
+    55% {
+      transform: translateX(-5px);
+      timing-function: ease-in;
+    }
+    73% {
+      transform: translateX(4px);
+      timing-function: ease-out;
+    }
+    82% {
+      transform: translateX(-4px);
+      timing-function: ease-in;
+    }
+    91% {
+      transform: translateX(2px);
+      timing-function: ease-out;
+    }
+    96% {
+      transform: translateX(-2px);
+      timing-function: ease-in;
+    }
+    100% {
+      transform: translateX(0px);
+      timing-function: ease-in;
+    }
+}
