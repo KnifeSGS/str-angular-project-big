@@ -1,6 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Attribute, Customer, CustomerAttributes, CustomerAttributesArray } from 'app/model/customer';
+import { Attribute, Customer, CustomerAttributesArray, Statistic } from 'app/model/customer';
 import { CustomerService } from 'app/services/customer.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -27,6 +27,8 @@ export class CustomerListComponent implements OnInit {
   attributes = CustomerAttributesArray;
   attributes_count: number = 0;
 
+  statistic = new Statistic();
+
   constructor(
     private customerService: CustomerService,
   ) { }
@@ -35,6 +37,7 @@ export class CustomerListComponent implements OnInit {
     this.customerService.getAll();
     this.updatingValues();
     this.setSortParams();
+    this.getStatistics();
   }
 
   updatingValues() {
@@ -45,6 +48,13 @@ export class CustomerListComponent implements OnInit {
     })
   }
 
+  getStatistics() {
+    this.customerList$.subscribe(item => {
+      this.statistic.totalNumber = item.length;
+      this.statistic.activeNumber = item.reduce((accu, curr) => {return curr.active? accu+1: accu}, 0);
+      this.statistic.inactiveNumber = item.reduce((accu, curr) => {return !curr.active? accu+1: accu}, 0);
+    })
+  }
 
 
   onDelete(customer: Customer): void {
@@ -80,15 +90,7 @@ export class CustomerListComponent implements OnInit {
     return this.attributes.findIndex(item => item.key===key);
   }
 
-
-  originalOrder = (a: KeyValue<number,string>, b: KeyValue<number,string>): number => {
-    return 0;
-  }
-  columnOrder = (a: KeyValue<number,string>, b: KeyValue<number,string>): number => {
-    return this.attributes[a.key].columnOrder - this.attributes[b.key].columnOrder;
-  }
-
-
+  // sorting
   onColumnSelect(key: string): void {
     this.attributes.forEach(item => {
       if(item.key===key){
@@ -111,7 +113,7 @@ export class CustomerListComponent implements OnInit {
     })    
   }
 
-
+  // column moving
   allowDrop(event: DragEvent): void {
     event.preventDefault();
   }
@@ -125,7 +127,6 @@ export class CustomerListComponent implements OnInit {
     this.changeColumnOrder(from, to);
     console.log(this.attributes);
     this.attributes_count++;
-    //this.attributes = {...this.attributes} as CustomerAttributes;
   }
   findColumnOrder(title: string): number {
     return this.attributes.findIndex(item => item.title===title);
@@ -133,36 +134,14 @@ export class CustomerListComponent implements OnInit {
   changeColumnOrder(from: number, to: number){
     this.attributes.splice(to, 0, this.attributes.splice(from, 1)[0]);
   }
-  findColumnOrder_obj(title: string): number {
-    for(let k in this.attributes){
-      if(this.attributes[k].title===title){
-        return this.attributes[k].columnOrder;
-      } 
-    }
-    return -1;
-  }
-  changeColumnOrder_obj(from: number, to: number){
-    const up = to-from>0? true: false;   
-    for(let k in this.attributes){
-      if(up && from<this.attributes[k].columnOrder && this.attributes[k].columnOrder<=to){
-        this.attributes[k].columnOrder--;
-      } else if(!up && to<=this.attributes[k].columnOrder && this.attributes[k].columnOrder<from){
-        this.attributes[k].columnOrder++;
-      } else if(this.attributes[k].columnOrder===from){
-        this.attributes[k].columnOrder = to;
-      }
-    }
-  }
-  trackAttribute({ index, element }: { index: number; element: any; }) {
-    return element ? element.columnOrder + this.attributes_count*10 : null
-  }
 
-
+  // pagination
   pagination = {
     pageSize: 10,
     itemCount: 0,
     pages: [],
     page: 1,
+    last: Number.POSITIVE_INFINITY,
     computePageParams(){
       this.pages = [];
       for(let i=0; i<this.itemCount/this.pageSize; i++){ 

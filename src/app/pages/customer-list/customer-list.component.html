@@ -6,6 +6,14 @@
                     <div class="card-header card-header-info">
                         <h4 class="card-title ">Customers</h4>
                         <p class="card-category">List of customers.</p>
+                        <div class="row">
+                            <div class="col-12 d-flex flex-wrap card-category statistic">
+                                <div class="mr-5">Total #: <span>{{ statistic.totalNumber }}</span></div> 
+                                <div class="mr-5">Active #: <span>{{ statistic.activeNumber }}</span></div> 
+                                <div class="mr-5">Inactive #: <span>{{ statistic.inactiveNumber }}</span></div> 
+                                <div *ngIf="statistic.totalNumber!=pagination.itemCount">Filtered #: <span>{{ pagination.itemCount }}</span></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card my-0 px-3">
                         <button [routerLink]="['/customer/0']"
@@ -66,7 +74,7 @@
                             title="next"><span
                                 class="material-icons">chevron_right</span></a>
                         <a class="page-link" [ngClass]="{'disabled': pagination.page===pagination.pages.length}"
-                            (click)="pagination.onNextPage(9999)"
+                            (click)="pagination.onNextPage(pagination.last)"
                             title="last"><span
                                 class="material-icons">last_page</span></a>
                     </div>
@@ -74,7 +82,7 @@
                         <mat-spinner></mat-spinner>
                     </div>
                     <div *ngIf="!updating" class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive table-striped">
                             <table class="table">
                                 <thead class="text-primary">
                                     <th *ngFor="let attribute of attributes"

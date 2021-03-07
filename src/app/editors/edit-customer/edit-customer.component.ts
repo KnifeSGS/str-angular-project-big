@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Customer, CustomerAttributes } from 'app/model/customer';
+import { Customer, CustomerAttributesArray } from 'app/model/customer';
 import { CustomerService } from 'app/services/customer.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class EditCustomerComponent implements OnInit {
 
   customer: Customer = new Customer();
 
-  attributes = new CustomerAttributes();
+  attributes = CustomerAttributesArray;
 
   constructor(
     private customerService: CustomerService,
@@ -26,11 +26,15 @@ export class EditCustomerComponent implements OnInit {
       params =>
         this.customerService.get(params.id).subscribe(
           customer => {
-            console.log(customer);
+            //console.log(customer);
             this.customer = customer || new Customer();
           }
         )
     );
+  }
+
+  getAttribute(key: string): any {
+    return this.attributes.find(item => item.key===key);
   }
 
   onFormSubmit(form: NgForm): void {
