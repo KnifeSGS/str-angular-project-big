@@ -14,27 +14,22 @@ export class Attribute {
   order:string='';
   headOrder:number;
 }
-export class CustomerAttributes{
-  id =        {title:"ID",        type:"text",  obj:"",         order:"", columnOrder:0};
-  firstName = {title:"Firstname", type:"text",  obj:"",         order:"", columnOrder:1};
-  lastName =  {title:"Lastname",  type:"text",  obj:"",         order:"", columnOrder:2};
-  email =     {title:"Email",     type:"text",  obj:"",         order:"", columnOrder:3};
-  zip =       {title:"Zip",       type:"text",  obj:"address",  order:"", columnOrder:4};
-  country =   {title:"Country",   type:"text",  obj:"address",  order:"", columnOrder:5};
-  city =      {title:"City",      type:"text",  obj:"address",  order:"", columnOrder:6};
-  street =    {title:"Street",    type:"text",  obj:"address",  order:"", columnOrder:7};
-  notes =     {title:"Notes",     type:"text",  obj:"address",  order:"", columnOrder:8};
-  active =    {title:"Active",    type:"check", obj:"",         order:"", columnOrder:9};
-}
+
 export const CustomerAttributesArray = [
-  {key:'id',        title:"ID",        type:"text",  obj:"",         order:"", columnOrder:0},
-  {key:'firstName', title:"Firstname", type:"text",  obj:"",         order:"", columnOrder:1},
-  {key:'lastName',  title:"Lastname",  type:"text",  obj:"",         order:"", columnOrder:2},
-  {key:'email',     title:"Email",     type:"text",  obj:"",         order:"", columnOrder:3},
-  {key:'zip',       title:"Zip",       type:"text",  obj:"address",  order:"", columnOrder:4},
-  {key:'country',   title:"Country",   type:"text",  obj:"address",  order:"", columnOrder:5},
-  {key:'city',      title:"City",      type:"text",  obj:"address",  order:"", columnOrder:6},
-  {key:'street',    title:"Street",    type:"text",  obj:"address",  order:"", columnOrder:7},
-  {key:'notes',     title:"Notes",     type:"text",  obj:"address",  order:"", columnOrder:8},
-  {key:'active',    title:"Active",    type:"check", obj:"",         order:"", columnOrder:9},
+  {key:'id',        title:"ID",        type:"text",  obj:"",         order:"", columnOrder_kk:0},
+  {key:'firstName', title:"Firstname", type:"text",  obj:"",         order:"", columnOrder_kk:1},
+  {key:'lastName',  title:"Lastname",  type:"text",  obj:"",         order:"", columnOrder_kk:2},
+  {key:'email',     title:"Email",     type:"text",  obj:"",         order:"", columnOrder_kk:3},
+  {key:'zip',       title:"Zip",       type:"text",  obj:"address",  order:"", columnOrder_kk:4},
+  {key:'country',   title:"Country",   type:"text",  obj:"address",  order:"", columnOrder_kk:5},
+  {key:'city',      title:"City",      type:"text",  obj:"address",  order:"", columnOrder_kk:6},
+  {key:'street',    title:"Street",    type:"text",  obj:"address",  order:"", columnOrder_kk:7},
+  {key:'notes',     title:"Notes",     type:"text",  obj:"address",  order:"", columnOrder_kk:8},
+  {key:'active',    title:"Active",    type:"check", obj:"",         order:"", columnOrder_kk:9},
 ]
+
+export class Statistic {
+  totalNumber: number = 0;
+  activeNumber: number = 0;
+  inactiveNumber: number = 0;
+}

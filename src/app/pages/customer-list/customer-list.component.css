@@ -10,6 +10,10 @@ select {
 	max-width: 900px;
 }
 
+.card-category.statistic span {
+	font-size: 1.2rem;
+	font-weight: bold;
+}
 th {
     cursor: pointer;
     user-select: none;
