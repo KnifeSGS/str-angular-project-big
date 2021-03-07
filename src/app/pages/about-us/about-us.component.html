@@ -8,14 +8,14 @@
           <div class="card-avatar">
             <img class="img" [src]="teamMember.imgSrc">
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h6 class="card-category text-gray">{{ teamMember.title }}</h6>
             <h4 class="card-title">{{ teamMember.name }}</h4>
-            <p class="card-description">
+            <p class="card-description h-100">
               {{ teamMember.description }}
             </p>
             <a [href]="teamMember.href"
-              class="btn btn-danger btn-round">Follow</a>
+              class="btn btn-danger btn-round mt-auto">Follow</a>
           </div>
         </div>
       </div>

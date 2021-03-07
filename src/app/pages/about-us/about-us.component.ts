@@ -47,7 +47,7 @@ export class AboutUsComponent implements OnInit {
       name: "Laszlo Szollosi",
       title: "angular junior",
       imgSrc: "./assets/img/faces/szl.png",
-      href: "#",
+      href: "https://github.com/KnifeSGS",
       description: "Sysadmin by day, Angular fan by night."
     },
     {
