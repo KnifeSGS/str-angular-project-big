@@ -56,12 +56,6 @@ export class CustomerListComponent implements OnInit {
     })
   }
 
-
-  onDelete(customer: Customer): void {
-    this.customerService.remove(customer);
-  }
-
-
   setDefault(key: string):boolean {
     return key === "firstName" ? true : false;
   }
@@ -166,19 +160,15 @@ export class CustomerListComponent implements OnInit {
     }
   }
 
+  // delete customer
   customer = new Customer();
-
+  onDelete(customer: Customer): void {
+    this.customerService.remove(customer);
+  }
   setCustomerDelete(customer: Customer): void {
     this.customer = customer;
     $('#confirmationDialog').on('shown.bs.modal', function () {
       $('#cancelButton').trigger('focus')
-    })
-    $('#confirmationDialog').on('hidden.bs.modal', function () {
-      let deleteIcon = document.querySelector(".fa-spinner");
-      if (deleteIcon !== null) {
-        deleteIcon.classList.remove("fa-spinner", "fa-pulse");
-        deleteIcon.classList.add("fa-trash");
-      }
     })
   }
 }
